@@ -5,9 +5,22 @@ package schedule
 
 import (
 	"fmt"
+	print "focus/cmd/logger"
+	reset "focus/cmd/reset"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
+
+type scheduleConfig struct {
+	isSchedule bool
+	daysOfWeek [7]string
+	startDate  uint
+	endDate    uint
+	startTime  uint
+	endTime    uint
+	apps       []string
+}
 
 // createCmd represents the create command
 var CreateCmd = &cobra.Command{
@@ -15,6 +28,18 @@ var CreateCmd = &cobra.Command{
 	Short: "Create a schedule to focus on",
 	Long:  `Show UI to create the schedule`,
 	Run: func(cmd *cobra.Command, args []string) {
+
+		print.Logger().Info("Looking for previous schedule....")
+		var err error = viper.ReadInConfig()
+
+		if err == nil {
+			reset.CreateDefaultConfigFile()
+			print.Logger().Info("No config file found", "creating one at", viper.ConfigFileUsed())
+		}
+		var config scheduleConfig = scheduleConfig{
+			isSchedule: viper.GetBool("isschedule"),
+		}
+
 		cmd.Help()
 		fmt.Println("create called")
 	},

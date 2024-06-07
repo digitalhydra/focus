@@ -6,6 +6,8 @@ package cmd
 import (
 	breaker "focus/cmd/break"
 	exception "focus/cmd/exception"
+	print "focus/cmd/logger"
+	reset "focus/cmd/reset"
 	schedule "focus/cmd/schedule"
 	service "focus/cmd/service"
 	"os"
@@ -72,9 +74,9 @@ func initConfig() {
 
 	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {
-		Logger().Debug("Using config file:", "Location", viper.ConfigFileUsed())
+		print.Logger().Debug("Using config file:", "Location", viper.ConfigFileUsed())
 	} else {
-		createDefaultConfigFile()
+		reset.CreateDefaultConfigFile()
 	}
 }
 
@@ -83,4 +85,5 @@ func addSubcommandPalletes() {
 	rootCmd.AddCommand(service.ServiceCmd)
 	rootCmd.AddCommand(exception.ExceptionCmd)
 	rootCmd.AddCommand(breaker.BreakCmd)
+	rootCmd.AddCommand(reset.ResetCmd)
 }
