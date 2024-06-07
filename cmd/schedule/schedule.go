@@ -1,5 +1,5 @@
 /*
-Copyright © 2024 digitalhydra <digitalhydra@proton.me>
+Copyright © 2024 Focus digitalhydra <digitalhydra@proton.me>
 */
 package schedule
 
