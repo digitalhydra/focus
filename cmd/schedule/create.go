@@ -7,6 +7,7 @@ import (
 	"fmt"
 	print "focus/cmd/logger"
 	reset "focus/cmd/reset"
+	"time"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -14,11 +15,11 @@ import (
 
 type scheduleConfig struct {
 	isSchedule bool
-	daysOfWeek [7]string
-	startDate  uint
-	endDate    uint
-	startTime  uint
-	endTime    uint
+	weekDays   [7]string
+	startDate  time.Time
+	endDate    time.Time
+	startTime  time.Time
+	endTime    time.Time
 	apps       []string
 }
 
@@ -38,6 +39,12 @@ var CreateCmd = &cobra.Command{
 		}
 		var config scheduleConfig = scheduleConfig{
 			isSchedule: viper.GetBool("isschedule"),
+			startDate:  viper.GetTime("startdate"),
+			endDate:    viper.GetTime("enddate"),
+			startTime:  viper.GetTime("starttime"),
+			endTime:    viper.GetTime("endtime"),
+			weekDays:   [7]string(viper.GetStringSlice("weekdays")),
+			apps:       viper.GetStringSlice("apps"),
 		}
 
 		cmd.Help()
