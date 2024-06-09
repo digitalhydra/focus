@@ -7,15 +7,17 @@ import (
 	"fmt"
 	print "focus/cmd/logger"
 	reset "focus/cmd/reset"
+	tui "focus/tui"
 	"time"
 
+	"github.com/charmbracelet/huh"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
 type scheduleConfig struct {
 	isSchedule bool
-	weekDays   [7]string
+	weekDays   []string
 	startDate  time.Time
 	endDate    time.Time
 	startTime  time.Time
@@ -43,18 +45,26 @@ var CreateCmd = &cobra.Command{
 			endDate:    viper.GetTime("enddate"),
 			startTime:  viper.GetTime("starttime"),
 			endTime:    viper.GetTime("endtime"),
-			weekDays:   [7]string(viper.GetStringSlice("weekdays")),
+			weekDays:   viper.GetStringSlice("weekdays"),
 			apps:       viper.GetStringSlice("apps"),
 		}
-
-		cmd.Help()
-		fmt.Println("create called")
+		form := huh.NewForm(
+			huh.NewGroup(
+				tui.WeekDaysSelect.Value(&config.weekDays),
+			),
+		)
+		errForm := form.Run()
+		if errForm != nil {
+			print.Logger().Error("Form error", "form render failed", errForm)
+		}
+		// cmd.Help()
+		fmt.Println("schedule create called")
 	},
 }
 
 func init() {
 
-	// Here you will define your flags and configuration settings.
+	// Here ymu will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:

@@ -6,6 +6,8 @@ package schedule
 import (
 	"fmt"
 
+	tui "focus/tui"
+
 	"github.com/spf13/cobra"
 )
 
@@ -15,6 +17,7 @@ var ScheduleCmd = &cobra.Command{
 	Short: "Show the current schedule",
 	Long:  `Root command to create or view the focus schedule `,
 	Run: func(cmd *cobra.Command, args []string) {
+		tui.GetTimes()
 		cmd.Help()
 		fmt.Println("schedule called")
 	},
